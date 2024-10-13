@@ -126,7 +126,6 @@ function updateParanoia(naskolko_ispugan) {
     if (paranoia >= dokuda_paranoish.x) {
         clearInterval(dadya_malyar);
         let current = 1;
-        debugger
         while (kak_nedavno_boyalis.length - esli_slishkom_strashno > 0) {
             let current_boyazn = kak_nedavno_boyalis.at(-1);
 
@@ -135,7 +134,6 @@ function updateParanoia(naskolko_ispugan) {
                 next_dotik = new dotik(current_boyazn.targetPointX, current_boyazn.targetPointY);
 
             setTimeout(() => {
-                debugger
                 malyar.nagotuvavsya_i_pishov_pishov(
                     current_dotik,
                     dotik_podgiba,
@@ -298,31 +296,23 @@ class malyar_v_dele {
             var delta = timestamp - start,
                 progress = Math.min(delta / kak_dolgo_bude_plushchit, 1);
 
-            this.#pishov_pishov(current_dotik, dotik_podgiba, next_dotik, 0, progress);
-            this.#pishov_pishov(this.#get_dzerkalnyi_dotik(current_dotik), this.#get_dzerkalnyi_dotik(dotik_podgiba), this.#get_dzerkalnyi_dotik(next_dotik), 0, progress);
+            this.#pishov_pishov(current_dotik, dotik_podgiba, next_dotik, 0, progress, instrumentik);
+            this.#pishov_pishov(this.#get_dzerkalnyi_dotik(current_dotik), this.#get_dzerkalnyi_dotik(dotik_podgiba), this.#get_dzerkalnyi_dotik(next_dotik), 0, progress, instrumentik);
 
             if (progress < 1) {
                 window.requestAnimationFrame(step);
             }
         };
 
-        this.#pidgotuem_polotno(instrumentik, current_dotik.x > this.#stena_na_malyareivchike.centralnyi_dotik_that_we_dropik.x);
         window.requestAnimationFrame(step);
     }
 
-    #pidgotuem_polotno(instrumentik, chy_boimsya_zaraz) {
-        this.#stena_na_malyareivchike.tuta_malyar_atgigae.strokeStyle = instrumentik.kolir;
-        this.#stena_na_malyareivchike.tuta_malyar_atgigae.lineWidth = instrumentik.shyryna;
-
-        this.#stena_na_malyareivchike.tuta_malyar_atgigae.shadowOffsetX = this.#yak_zateniayemo.na_skiky_posunem * (chy_boimsya_zaraz ? -1 : 1);
-        this.#stena_na_malyareivchike.tuta_malyar_atgigae.shadowColor = this.#yak_zateniayemo.sho_po_samomu_shedowu;
-        this.#stena_na_malyareivchike.tuta_malyar_atgigae.shadowBlur = this.#yak_zateniayemo.blurik;
-    }
-
-    #pishov_pishov(current_dotik, dotik_podgiba, next_dotik, taimlain_pochatku, taimlain_kincya) {
+    #pishov_pishov(current_dotik, dotik_podgiba, next_dotik, taimlain_pochatku, taimlain_kincya, instrumentik) {
         const pershyi_kadr_skipaem = taimlain_kincya == taimlain_pochatku;
         if (pershyi_kadr_skipaem)
             return;
+
+        this.#pidgotuem_polotno(instrumentik, current_dotik.x > this.#stena_na_malyareivchike.centralnyi_dotik_that_we_dropik.x);
 
         const vzhe_v_kinci_lainu = 0.0 == taimlain_pochatku && taimlain_kincya == 1.0;
         if (vzhe_v_kinci_lainu) {
@@ -336,6 +326,15 @@ class malyar_v_dele {
 
         this.#risuem_paranoinyi_dvizhulik(current_dotik_na_freime, dotik_podgiba_na_freime, next_dotik_na_freime);
 
+    }
+
+    #pidgotuem_polotno(instrumentik, chy_boimsya_zaraz) {
+        this.#stena_na_malyareivchike.tuta_malyar_atgigae.strokeStyle = instrumentik.kolir;
+        this.#stena_na_malyareivchike.tuta_malyar_atgigae.lineWidth = instrumentik.shyryna;
+
+        this.#stena_na_malyareivchike.tuta_malyar_atgigae.shadowOffsetX = this.#yak_zateniayemo.na_skiky_posunem * (chy_boimsya_zaraz ? -1 : 1);
+        this.#stena_na_malyareivchike.tuta_malyar_atgigae.shadowColor = this.#yak_zateniayemo.sho_po_samomu_shedowu;
+        this.#stena_na_malyareivchike.tuta_malyar_atgigae.shadowBlur = this.#yak_zateniayemo.blurik;
     }
 
     #risuem_paranoinyi_dvizhulik(current_dotik, dotik_podgiba, next_dotik) {
